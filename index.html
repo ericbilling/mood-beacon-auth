@@ -2,34 +2,55 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Opening Mood Beacon...</title>
+  <title>Open Mood Beacon</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
-    body { font-family: -apple-system, sans-serif; display: flex; align-items: center;
-           justify-content: center; height: 100vh; margin: 0; background: #f8fafc; }
-    .card { text-align: center; padding: 40px; }
-    .emoji { font-size: 48px; margin-bottom: 16px; }
-    h1 { font-size: 20px; color: #0f172a; margin: 0 0 8px; }
-    p { color: #64748b; font-size: 14px; margin: 0; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #f8fafc;
+      display: flex; align-items: center; justify-content: center;
+      min-height: 100vh; padding: 24px;
+    }
+    .card {
+      text-align: center; max-width: 320px; width: 100%;
+    }
+    .emoji { font-size: 56px; margin-bottom: 20px; }
+    h1 { font-size: 22px; font-weight: 800; color: #0f172a; margin-bottom: 8px; }
+    p  { font-size: 14px; color: #64748b; line-height: 1.5; margin-bottom: 32px; }
+    .btn {
+      display: block; width: 100%;
+      background: #0ea5e9; color: #fff;
+      font-size: 17px; font-weight: 700;
+      padding: 16px; border-radius: 14px;
+      text-decoration: none;
+      box-shadow: 0 4px 14px rgba(14,165,233,0.35);
+    }
+    .btn:active { opacity: 0.85; }
   </style>
 </head>
 <body>
   <div class="card">
     <div class="emoji">🔆</div>
-    <h1>Opening Mood Beacon...</h1>
-    <p>If the app doesn't open, make sure Mood Beacon is installed.</p>
+    <h1>Open Mood Beacon</h1>
+    <p>Tap the button below to open the app and complete your request.</p>
+    <a id="deeplink" class="btn" href="#">Open Mood Beacon App</a>
   </div>
   <script>
     (function () {
-      var hash = window.location.hash;
-      var search = window.location.search;
+      var hash   = window.location.hash;   // #access_token=...&type=recovery
+      var search = window.location.search; // ?code=... (PKCE)
+      var target;
+
       if (hash && hash.includes('access_token=')) {
-        window.location.href = 'moodbeacon://auth/callback' + hash;
+        target = 'moodbeacon://auth/callback' + hash;
       } else if (search && search.includes('code=')) {
-        window.location.href = 'moodbeacon://auth/callback' + search;
+        target = 'moodbeacon://auth/callback' + search;
       } else {
-        window.location.href = 'https://bipolarbeacon.com';
+        target = 'moodbeacon://';
       }
+
+      document.getElementById('deeplink').href = target;
     })();
   </script>
 </body>
